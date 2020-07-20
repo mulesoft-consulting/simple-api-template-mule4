@@ -1,0 +1,145 @@
+#%RAML 1.0 Library
+usage: Library of common HTTP statuses for response to operations
+
+types:
+  error:
+    description: Models the standard structure for an error response
+    properties:
+      error:
+        type: object
+        properties:          
+          errorCode: string
+          errorDateTime: datetime
+          errorMessage?: string
+          errorDescription: string
+  
+traits: 
+  "200":
+    responses: 
+      200:
+        description: |
+          The request has succeeded without any errors.
+        headers:
+          x-correlation-id:
+            description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications 
+            type: string
+            example:  2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+
+  "201":
+    responses: 
+      201:
+        description: |
+          The request has been fulfilled and has resulted in one or more new resources being created.
+        headers:
+          x-correlation-id: string
+          
+  "202":
+    responses: 
+      202:
+        description: |
+         The request has been accepted for processing, but the processing has not been completed. The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place.
+        headers:
+          x-correlation-id: string
+
+  "400":
+    responses: 
+      400:
+        description: |
+          The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/400example.raml
+            
+  "401":
+    responses: 
+      401:
+        description: |
+          The request has not been accepted because it lacks valid authentication credentials for the target resource.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/401example.raml
+  "403":
+    responses: 
+      403:
+        description: |
+          The server understood the request but refuses to authorize it.       
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/403example.raml
+  "404":
+    responses: 
+      404:
+        description: |
+          The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/404example.raml
+  "405":
+    responses: 
+      405:
+        description: |
+          The the request method is known by the server but is not supported by the target resource.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/405example.raml
+  "409":
+    responses:
+      409:
+        description: | 
+          The request could not be completed due to a conflict with the current state of the target resource.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/409example.raml
+        
+  "500":
+    responses: 
+      500:
+        description: |
+          The server encountered an unexpected condition that prevented it from fulfilling the request.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/500example.raml
+  "502":
+    responses:
+      502:
+        description: |
+          The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/502example.raml
+  "504":
+    responses:
+      504:
+        description: |
+          The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+        headers:
+          x-correlation-id: string
+        body:
+          application/json:
+            type: error
+            example: !include examples/504example.raml
+    

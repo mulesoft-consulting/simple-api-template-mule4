@@ -1,0 +1,51 @@
+#%RAML 1.0
+title: salesforce-accounts-system-api
+mediaType: application/json
+
+traits:
+  client-id-policy: !include /exchange_modules/07aa4c71-97cb-46c0-ad91-105eb50b78e8/client-id-policy/1.0.0/client-id-policy.raml
+
+uses:
+  common-responses: /exchange_modules/07aa4c71-97cb-46c0-ad91-105eb50b78e8/common-responses/1.0.0/common-responses.raml
+  common-datatypes: /exchange_modules/07aa4c71-97cb-46c0-ad91-105eb50b78e8/common-datatypes/1.0.1/common-datatypes.raml
+
+/accounts:
+  get:
+    description: Read multiple accounts
+    is: [client-id-policy, common-responses.200, common-responses.404]
+    
+  post:
+    description: Create multiple accounts
+    is: [client-id-policy, common-responses.200, common-responses.404]
+    body:
+      application/json:
+        type: common-datatypes.account
+
+  /{id}:
+    get:
+      description: Read one account with example response
+      is: [client-id-policy, common-responses.404]
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include /exchange_modules/07aa4c71-97cb-46c0-ad91-105eb50b78e8/common-datatypes/1.0.1/examples/accountExample.raml
+    
+    post:
+      description: Create one account
+      is: [client-id-policy, common-responses.200, common-responses.404]
+      body:
+        application/json:
+          type: common-datatypes.account
+
+    put:
+      description: Update one account
+      is: [client-id-policy, common-responses.200, common-responses.404]
+      body:
+        application/json:
+          type: common-datatypes.account
+
+    delete:
+      description: Delete one account
+      is: [client-id-policy, common-responses.200, common-responses.404]
+      

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:notification-system-api="http://www.mulesoft.org/schema/mule/notification-system-api" xmlns:sns="http://www.mulesoft.org/schema/mule/sns" xmlns:adl-system-api="http://www.mulesoft.org/schema/mule/adl-system-api" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/adl-system-api http://www.mulesoft.org/schema/mule/adl-system-api/current/mule-adl-system-api.xsd
+http://www.mulesoft.org/schema/mule/sns http://www.mulesoft.org/schema/mule/sns/current/mule-sns.xsd
+http://www.mulesoft.org/schema/mule/notification-system-api http://www.mulesoft.org/schema/mule/notification-system-api/current/mule-notification-system-api.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="account-read-subflow" doc:id="12c0d18e-5ae8-4899-8ef3-0336b81684c4" >
+		<salesforce:query-all doc:name="Query all Customer" doc:id="1bd92f2e-0546-44af-aa12-bfabd8e2b07b" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT address__c,CreatedDate,firstName__c,Id,lastName__c,orderId__c FROM Customer__c]]></salesforce:salesforce-query>
+		</salesforce:query-all>
+		<ee:transform doc:name="transform to JSON" doc:id="d7f57b8f-57e8-496e-93fe-996cbcfaf215" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="a200ad81-22ab-4734-a880-1c790d4c9ccd" config-ref="JSON_Logger_Config" message="Salesforce After Request" tracePoint="AFTER_REQUEST" />
+	</sub-flow>
+	
+</mule>

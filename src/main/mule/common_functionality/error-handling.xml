@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="global-error-handler" doc:id="c271bc2e-41f2-478b-97c3-45a6bd746089">
+		
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6df8981d-73ea-49b9-aa8e-5e8e0317a51b" when="#[error.errorType.namespace == 'HTTP']">
+			<error-handler-plugin:on-error doc:name="On Continue Error Processor" doc:id="b0ffda47-a44f-4b45-9e46-841e81fe3007" serverError="#[error.description]"/>
+			<json-logger:logger doc:name="Logger" doc:id="a16d77a1-eba3-41a1-9152-0af88d90113c" config-ref="JSON_Logger_Config" message="After Error Processor" tracePoint="FLOW" priority="ERROR"/>
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4ff0f99b-885c-47a4-9f43-12130e07d1e7" type="ANY">
+			<error-handler-plugin:on-error doc:name="On Propagate Error Processor" doc:id="051be6f5-aa79-4c0f-8f0a-d5e07249af3f" serverError="#[error.description]"/>
+			<json-logger:logger doc:name="Logger" doc:id="eb776902-8692-4599-930a-1aa306deb435" config-ref="JSON_Logger_Config" message="After Error Processor" tracePoint="FLOW" priority="ERROR"/>
+		</on-error-continue>
+	</error-handler>
+	
+</mule>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="MULE_LIB/07aa4c71-97cb-46c0-ad91-105eb50b78e8/common-error-handler/3.0.1"/>
+	<classpathentry kind="con" path="MULE_LIB/07aa4c71-97cb-46c0-ad91-105eb50b78e8/json-logger/2.0.1"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-http-connector/1.2.0"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-sockets-connector/1.1.1"/>
+	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.connectors/anypoint-mq-connector/3.1.0"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.modules/mule-validation-module/1.4.0"/>
+	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.connectors/mule-amqp-connector/1.6.0"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-jms-connector/1.6.3"/>
+	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.modules/mule-secure-configuration-property-module/1.2.2"/>
+	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.connectors/mule-salesforce-connector/10.1.1"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-objectstore-connector/1.1.3"/>
+	<classpathentry kind="con" path="MULE_LIB/org.mule.modules/mule-apikit-module/1.3.11"/>
+	<classpathentry exported="true" kind="con" path="MULE_RUNTIME/org.mule.tooling.server.4.3.0.ee"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/mule"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry kind="src" path="src/test/munit"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

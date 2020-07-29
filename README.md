@@ -1,1 +1,1 @@
-# qr-api-template
+# template-api

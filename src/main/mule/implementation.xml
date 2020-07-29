@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="template-impl-subFlow" doc:id="348004e0-9169-4335-8cfd-9b28b62d778a" >
+		<json-logger:logger doc:name="Before Transform" doc:id="f72afa6e-a1f8-4ea4-8289-bd5a8a7d7ad0" config-ref="JSON_Logger_Config" message="Before transform" tracePoint="BEFORE_TRANSFORM" priority="DEBUG" />
+		<ee:transform doc:name="Set Template Payload" doc:id="72d0828a-0210-4faa-8aca-0e22253ef47d" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  success: true,
+  message: "Hello World!"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="AfterTransform" doc:id="3d185759-4b9b-46ad-b234-c60b03d30814" config-ref="JSON_Logger_Config" message="After Transform" tracePoint="AFTER_TRANSFORM" priority="DEBUG" />
+	</sub-flow>
+	<sub-flow name="status-impl-subFlow" doc:id="601ee210-d2bf-49cb-a2c9-9211b694c9a4" >
+		<json-logger:logger doc:name="Before Transform" doc:id="1e06582e-c03a-41ea-bd65-43b5feda48df" config-ref="JSON_Logger_Config" message="Before transform" priority="DEBUG" tracePoint="BEFORE_TRANSFORM"/>
+		<ee:transform doc:name="Set Status Payload" doc:id="1902fdee-4068-4c47-81a3-c9ac9581306f" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  success: true,
+  apiName: p("api.name"),
+  version: p("api.version"),
+  timestamp: now()
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="AfterTransform" doc:id="aa875ed8-873b-459f-abe7-68204964440c" config-ref="JSON_Logger_Config" message="After Transform" tracePoint="AFTER_TRANSFORM" priority="DEBUG" />
+	</sub-flow>
+
+
+</mule>

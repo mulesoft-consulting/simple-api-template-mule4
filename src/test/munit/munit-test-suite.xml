@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munit-test-suite.xml" />
+	<munit:test name="get:\status:Router-test" doc:id="62143e6c-c56e-4f1e-9b24-311a6135ae10">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Set flowName" doc:id="1e0b5abd-e1af-45b1-97cb-33fccfd1d994" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1ce1f4db-ce76-4c76-b24c-6face1cbb00c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert variables" doc:id="c1169443-b5b6-4db7-9ba4-51b17a98bd31" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getstatusRoutertest::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\status:Router" doc:id="ba043a7b-8df9-426e-aa82-ee835c0ce645" name="get:\status:Router"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="8b0cd1c4-f17c-489f-8f56-a72555a17559" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getstatusRoutertest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Flow Start" doc:id="94eda068-18cc-42bf-856e-fd73fe53cb24" processor="json-logger:logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ce5cb637-a5d7-4acb-afdf-db74cf2f2630" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Flow Reference" doc:id="583c1b9e-d260-40b9-95d3-40ce50d231bd" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="34a45a79-a352-44f5-af4b-4f19771d466b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Flow End" doc:id="2b6855db-cad3-4599-a3c3-b22d9357e6c7" processor="json-logger:logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="acfdbd16-e372-4ac5-84a2-1914906eceb9" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set flowName" doc:id="f7283442-0c27-41d7-b385-57e3667bac82" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1ce1f4db-ce76-4c76-b24c-6face1cbb00c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\template:Router-test" doc:id="b8007655-589d-4692-877e-30055db7c1e7">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Set flowName" doc:id="d156d7bf-ebf0-471b-be9d-4df454051415" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="32d48026-cb0d-4ec2-94b4-9eaee9180d35" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert variables" doc:id="39906009-f47c-4fae-ae7e-72d265e0989e" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import gettemplateRoutertest::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\template:Router" doc:id="96659c08-e897-4581-b101-2852f39c214f" name="get:\template:Router"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="88e4b625-c4bc-4e8b-83e4-fb4fb714a1a4" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import gettemplateRoutertest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Flow Start" doc:id="28803232-54a4-478f-8602-008181bb661e" processor="json-logger:logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5efd38c4-84b0-406e-9e6a-d9107bd0cbac" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Flow End" doc:id="7fd08d6c-c1b1-4446-a8fd-e01839ea1849" processor="json-logger:logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6f195302-cada-41aa-a722-b66686bd3a51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify template-impl-subFlow" doc:id="12194df5-29a0-40a4-9bb5-4a2af6b45c1d" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0d8051b9-905d-4253-951e-6869c5f73c64" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set flowName" doc:id="8af7b899-7a9e-42a5-b25e-c73a4294731a" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="32d48026-cb0d-4ec2-94b4-9eaee9180d35" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+</mule>

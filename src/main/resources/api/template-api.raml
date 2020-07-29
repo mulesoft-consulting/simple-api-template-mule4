@@ -1,0 +1,39 @@
+#%RAML 1.0
+version: v1
+title: API Specification Template
+
+description: This is a template project for a System API which should be used each time a new System API is to be created 
+
+/template:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            properties:
+              success: boolean
+              message: string
+            examples:
+              helloWorldExample:
+                success: true
+                message: "Hello World!"
+
+/status:
+  get:
+    responses:
+      200:
+        body:
+           application/json:
+             properties:
+              success: boolean
+              apiName: string
+              version: string
+              timestamp: datetime
+             examples:
+               statusExample:
+                success: true
+                apiName: "test-template-api"
+                version: "1.0.0"
+                timestamp: "2020-07-12T09:35:39.406+02:00"
+
+            

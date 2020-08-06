@@ -11,8 +11,7 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 	<!-- imports for common logging and error handling frameworks -->
 	<configuration-properties doc:name="Configuration properties" doc:id="a249e2d7-10cf-4ce4-8322-01fcd3fd3de1" file="properties/template-api-${mule.env}.properties" doc:description="Loading Env properties files"/>
 	<configuration-properties doc:name="Configuration properties" doc:id="1bc54e80-e546-4cac-b6e6-3cbecb0eea64" file="properties/common.properties" doc:description="Loading common properties config"/>
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="2c9a0979-6d4d-41a2-bde3-bfcd29dcbe01" file="properties/template-api-${mule.env}.properties" key="${encryption.key}" >
-		<secure-properties:encrypt algorithm="DESede" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="2c9a0979-6d4d-41a2-bde3-bfcd29dcbe01" file="properties/template-api-${mule.env}.properties" key="${mule.vault.key}" >
 	</secure-properties:config>
 	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="c4b7dea5-9968-455c-b82c-b65b93a9831e" name="Router" api="api/template-api.raml" parser="RAML"/>
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7651579c-483a-4e6a-89eb-0ade5f0d6232">
@@ -21,5 +20,5 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 	<configuration-properties doc:name="Configuration properties" doc:id="032f85f9-4dda-42c0-b698-32933650d7d3" file="properties/json-logger.properties" />
 	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="23495348-fe54-49ce-86ea-edce09954269" environment="${mule.env}" />
 	<global-property doc:name="Global Property" doc:id="0ef8618b-bdf9-4479-b8e5-29611e57d28a" name="mule.env" value="dev" />
-	<global-property doc:name="Global Property" doc:id="03b8b85f-518d-4121-a804-57eed5ebedc8" name="encryption.key" value="passwordpassword" />
+	<global-property doc:name="Global Property" doc:id="03b8b85f-518d-4121-a804-57eed5ebedc8" name="mule.vault.key" value="passwordpassword" />
 </mule>

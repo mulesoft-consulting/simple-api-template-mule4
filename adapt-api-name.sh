@@ -10,6 +10,8 @@
 #
 # 3. Rename root directory to new API name
 #
+# 4. Initializes the git configuration. You need to execute : git remote set-url origin <repo-url>
+#
 # You call it in the root directory of the repository and pass as the
 # sole argument your API's name:
 #
@@ -55,3 +57,10 @@ find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW
 echo "renaming ../$OLD_ROOT -> ../$NEW_ROOT"
 
 mv "../$OLD_ROOT" "../$NEW_ROOT"
+
+
+echo "Initializing git"
+
+git init
+
+echo "Please reconfigure you git remote address using: git remote set-url origin <repo-url>"

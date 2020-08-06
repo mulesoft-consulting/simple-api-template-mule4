@@ -38,28 +38,28 @@
 				<extensions>true</extensions>
 				<configuration>
 					<cloudHubDeployment>
-						<uri>${anypoint.platform.eu1.base_uri}</uri>
+						<objectStoreV2>true</objectStoreV2>
+						<uri>${anypoint.base_uri}</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${anypoint.user}</username>
-						<password>${anypoint.pw}</password>
-						<applicationName>${project.artifactId}</applicationName>
-						<environment>${anypoint.env}</environment>
+						<authToken>${authToken}</authToken>
+						<applicationName>${project.artifactId}-v1-${anypoint.environment}</applicationName>
+						<businessGroup>${anypoint.businessgroup}</businessGroup>
+						<workers>${anypoint.workers}</workers>
 						<workerType>${anypoint.workertype}</workerType>
-						<workers>${anypoint.numberofworkers}</workers>
-						<properties>
-							<mule.env>${mule.env}</mule.env>
-							<encryption.key>${encryption.key}</encryption.key>
-							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
-							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
-							<anypoint.platform.base_uri>${anypoint.platform.eu1.base_uri}</anypoint.platform.base_uri>
-							<anypoint.platform.analytics_base_uri>${anypoint.platform.eu1.analytics_base_uri}</anypoint.platform.analytics_base_uri>
-							<anypoint.platform.config.analytics.agent.enabled>${anypoint.platform.analytics.agent.enabled}</anypoint.platform.config.analytics.agent.enabled>
-						</properties>
 						<region>${anypoint.region}</region>
-						<businessGroup>${anypoint.bg}</businessGroup>
+						<environment>${anypoint.environment}</environment>
+						<deploymentTimeout>2000000</deploymentTimeout>
+						<properties>
+							<mule.env>${env}</mule.env>
+							<anypoint.platform.client_id>${platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${platform.client_secret}</anypoint.platform.client_secret>
+							<mule.vault.key>${mule.vault.key}</mule.vault.key>
+							<anypoint.platform.base_uri>${anypoint.base_uri}</anypoint.platform.base_uri>
+							<anypoint.platform.analytics_base_uri>${anypoint.analytics_base_uri}</anypoint.platform.analytics_base_uri>
+						</properties>
 					</cloudHubDeployment>
-                <classifier>mule-application</classifier>
-                </configuration>
+					<classifier>mule-application</classifier>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>

@@ -21,4 +21,5 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="23495348-fe54-49ce-86ea-edce09954269" environment="${mule.env}" />
 	<global-property doc:name="Global Property" doc:id="0ef8618b-bdf9-4479-b8e5-29611e57d28a" name="mule.env" value="dev" />
 	<global-property doc:name="Global Property" doc:id="03b8b85f-518d-4121-a804-57eed5ebedc8" name="mule.vault.key" value="passwordpassword" />
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4c00a2e8-7fb8-4cf5-b01b-82487746963b" flowRef="${autodiscovery.flow}" />
 </mule>

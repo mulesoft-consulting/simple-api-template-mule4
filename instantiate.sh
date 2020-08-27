@@ -51,6 +51,8 @@ if [ "$NEW_ROOT" == "$OLD_ROOT" ]; then
     exit 1
 fi
 
+# Create root directory
+echo "create new folder ../$OLD_ROOT -> ../$NEW_ROOT"
 cp -r "../$OLD_ROOT" "../$NEW_ROOT"
 cd "../$NEW_ROOT"
 
@@ -67,9 +69,6 @@ find ./src -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_R
 # Replace project name in POM
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
 
-# Rename root directory
-echo "renaming ../$OLD_ROOT -> ../$NEW_ROOT"
-
 echo "Initializing git"
 
 git init
@@ -81,9 +80,9 @@ if [ -z "$REPO_URL" ]; then
     echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection> "
     echo "|______________________________________________________________________________________________________"
 else
-    echo "\tUpdatig pom.xml "
+    echo "   Updating pom.xml "
     find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/'[REPLACE_WITH_REPO_URL]'/"$REPO_URL"/g
-    echo "\tUpdating git remote url"
+    echo "   Updating git remote url"
     git remote set-url origin "$REPO_URL"
 fi
 

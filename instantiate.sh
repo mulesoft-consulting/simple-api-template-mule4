@@ -1,6 +1,6 @@
-#! /bin/bash
+#!/bin/bash
 
-#Execute : ./adapt-api-name.sh my-api-name  git@github:user/repository.git
+#Execute : ./instantiate.sh my-api-name  git@github:user/repository.git
 
 # This script executes the following steps:
 #
@@ -25,6 +25,27 @@
 # Do not allow undefined variables.
 set -u
 
+
+print_help () {
+    echo
+    echo "Usage: ./instantiate.sh [api-name] [api-repo-url]"
+    echo
+    echo "Options:"
+    echo "api-name (required): the name of the project"
+    echo "api-repo-url: the url to the repo"
+    echo
+}
+
+print_git_repo_missing () {
+    echo
+    echo " ______________________________________________________________________________________________________"
+    echo "| !! Git Repository manual configuration !!"
+    echo "| * Please reconfigure your git remote address using: git remote set-url origin <repo-url>"
+    echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection>"
+    echo "|______________________________________________________________________________________________________"
+    echo
+}
+
 # We need the script's name in order to exclude it from searches.
 SCRIPT_NAME=$(basename "$0")
 
@@ -35,23 +56,28 @@ TEMPLATE_FLAG="template-api"
 
 
 if [ "$#" -lt 1 ]; then
-    echo "Usage: ./script.sh [api-name]  [api-repo-url]"
-    echo "You must specify at least one argument: your API's name."
+    print_help
+    echo "[Error] You must specify at least one argument: your API's name."
     exit 1
 fi
 
-# This is your API's name.
+# API name.
 NEW_ROOT="$1"
 
 #API Repository
-REPO_URL="$2"
+if [ "$#" -gt 1 ]; then
+    REPO_URL="$2"
+else
+    REPO_URL=""
+fi
 
-if [ "$NEW_ROOT" == "$OLD_ROOT" ]; then
-    echo "You must specify a name different from \"$OLD_ROOT\"."
+if [ -d "../$NEW_ROOT" ]; then
+    print_help
+    echo "[Error] \"$NEW_ROOT\" Directory exists. Please provide another name or remove the existing."
     exit 1
 fi
 
-# Create root directory
+# Create root directory by copying this template
 echo "* create new folder ../$OLD_ROOT -> ../$NEW_ROOT"
 cp -r "../$OLD_ROOT" "../$NEW_ROOT"
 cd "../$NEW_ROOT"
@@ -71,17 +97,12 @@ find ./src -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
 
-echo "* Initializing git..."
 
+echo "* Initializing git..."
 git init
 
 if [ -z "$REPO_URL" ]; then
-    echo ""
-    echo " ______________________________________________________________________________________________________"
-    echo "| !! Attention you didn't provide any repository !!"
-    echo "| * Please reconfigure you git remote address using: git remote set-url origin <repo-url>"
-    echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection> "
-    echo "|______________________________________________________________________________________________________"
+    print_git_repo_missing
 else
     # Escaping the repo url
     REPO_ESC_URL=""

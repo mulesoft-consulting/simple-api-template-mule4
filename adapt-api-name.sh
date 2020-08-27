@@ -1,5 +1,7 @@
 #! /bin/bash
 
+#Execute : ./adapt-api-name.sh my-api-name  git@github:user/repository.git
+
 # This script executes the following steps:
 #
 # 1. Rename files by replacing "template-api" by your
@@ -10,7 +12,10 @@
 #
 # 3. Rename root directory to new API name
 #
-# 4. Initializes the git configuration. You need to execute : git remote set-url origin <repo-url>
+# 4. Initializes the git configuration. 
+#    If you don't supply the git repo you need to 
+#        1. update the pom.xml yourself with the repo url inside <developerConnection></developerConnection>
+#        2. execute : git remote set-url origin <repo-url> 
 #
 # You call it in the root directory of the repository and pass as the
 # sole argument your API's name:
@@ -35,10 +40,16 @@ fi
 # This is your API's name.
 NEW_ROOT="$1"
 
+#API Repository
+REPO_URL="$2"
+
 if [ "$NEW_ROOT" == "$OLD_ROOT" ]; then
     echo "You must specify a name different from \"$OLD_ROOT\"."
     exit 1
 fi
+
+cp -r "../$OLD_ROOT" "../$NEW_ROOT"
+cd "../$NEW_ROOT"
 
 # Rename files by replacing the project name.
 while IFS= read -r -d '' old_name; do
@@ -56,11 +67,21 @@ find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW
 # Rename root directory
 echo "renaming ../$OLD_ROOT -> ../$NEW_ROOT"
 
-mv "../$OLD_ROOT" "../$NEW_ROOT"
-
-
 echo "Initializing git"
 
 git init
 
-echo "Please reconfigure you git remote address using: git remote set-url origin <repo-url>"
+if [ -z "$REPO_URL" ]; then
+    echo "\tUpdatig pom.xml "
+    find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/'[REPLACE_WITH_REPO_URL]'/"$REPO_URL"/g
+    echo "\tUpdating git remote url"
+    git remote set-url origin "$REPO_URL"
+else
+    echo " ______________________________________________________________________________________________________"
+    echo "| !! Attention you didn't provide any repository !!"
+    echo "| * Please reconfigure you git remote address using: git remote set-url origin <repo-url>"
+    echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection> "
+    echo "|______________________________________________________________________________________________________"
+fi
+
+cd "../$OLD_ROOT"

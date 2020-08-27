@@ -30,10 +30,13 @@ SCRIPT_NAME=$(basename "$0")
 
 # This is the template name, to be replaced in file names and file
 # content.
-OLD_ROOT='template-api'
+OLD_ROOT=$(basename "$PWD")
 
-if [ "$#" -ne 1 ]; then
-    echo "You must specify exactly one argument: your API's name."
+echo 
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: ./script.sh [api-name]  [api-repo-url]"
+    echo "You must specify at least one argument: your API's name."
     exit 1
 fi
 
@@ -72,16 +75,16 @@ echo "Initializing git"
 git init
 
 if [ -z "$REPO_URL" ]; then
-    echo "\tUpdatig pom.xml "
-    find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/'[REPLACE_WITH_REPO_URL]'/"$REPO_URL"/g
-    echo "\tUpdating git remote url"
-    git remote set-url origin "$REPO_URL"
-else
     echo " ______________________________________________________________________________________________________"
     echo "| !! Attention you didn't provide any repository !!"
     echo "| * Please reconfigure you git remote address using: git remote set-url origin <repo-url>"
     echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection> "
     echo "|______________________________________________________________________________________________________"
+else
+    echo "\tUpdatig pom.xml "
+    find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/'[REPLACE_WITH_REPO_URL]'/"$REPO_URL"/g
+    echo "\tUpdating git remote url"
+    git remote set-url origin "$REPO_URL"
 fi
 
 cd "../$OLD_ROOT"

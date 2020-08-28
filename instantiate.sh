@@ -244,6 +244,7 @@ echo;echo "#### STEP3: CLEANING PROJECT"
 echo -n "* removing files..."
 rm -f "$SCRIPT_NAME"
 rm -f "ci-cd_setup.md"
+rm -r "assets"
 echo "done."
 
 

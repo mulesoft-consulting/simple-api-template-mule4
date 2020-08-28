@@ -92,12 +92,12 @@ pipeline {
 
     ENV = getMappedEnv(GIT_BRANCH)
     ANYPOINT_ENV = getDeployEnv(GIT_BRANCH)
-    ANYPOINT_REGION = "eu-central-1"
-    ANYPOINT_BUSINESS_GROUP = "Cargo"
+    ANYPOINT_REGION = "{{REGION}}"
+    ANYPOINT_BUSINESS_GROUP = "{{GROUP_NAME}}"
     ANYPOINT_WORKER_TYPE = "MICRO"
     ANYPOINT_WORKERS = "1"
-    ANYPOINT_HOST = "https://eu1.anypoint.mulesoft.com"
-    ANYPOINT_ANALYTICS_HOST = "https://analytics-ingest.eu1.anypoint.mulesoft.com"
+    ANYPOINT_HOST = "https://{{ANYPOINT_HOST}}"
+    ANYPOINT_ANALYTICS_HOST = "https://analytics-ingest.{{ANYPOINT_HOST}}"
 
     ANYPOINT_VAULT_CRED_KEY = "anypoint.vault.${PROJECT_NAME}.${ENV}.key"
     
@@ -107,7 +107,7 @@ pipeline {
     ANYPOINT_APP_CLIENT_ID_KEY = "anypoint.app.${ENV_TYPE}.client_id"
     ANYPOINT_APP_CLIENT_SECRET_KEY = "anypoint.app.${ENV_TYPE}.client_secret"
 
-    MVN_SETTING_FILE_ID = "qa-cargo-mvn-settings"
+    MVN_SETTING_FILE_ID = "{{MVN_GLBL_SETT_ID}}"
   } 
   stages {
 
@@ -131,7 +131,7 @@ pipeline {
         ANYPOINT_APP_CLIENT_ID = credentials("${ANYPOINT_APP_CLIENT_ID_KEY}")
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET_KEY}")
         
-        ACCESS_TOKEN = sh (script: "curl -s 'https://eu1.anypoint.mulesoft.com/accounts/api/v2/oauth2/token' \
+        ACCESS_TOKEN = sh (script: "curl -s 'https://{{ANYPOINT_HOST}}/accounts/api/v2/oauth2/token' \
           -X POST -H 'Content-Type: application/json' \
           -d '{\"grant_type\": \"client_credentials\", \"client_id\": \"${ANYPOINT_APP_CLIENT_ID}\", \"client_secret\": \"${ANYPOINT_APP_CLIENT_SECRET}\"}' \
           | sed -n 's|.*\"access_token\":\"\\([^\"]*\\)\".*|\\1|p'", returnStdout: true).trim()
@@ -160,7 +160,7 @@ pipeline {
         ANYPOINT_APP_CLIENT_ID = credentials("${ANYPOINT_APP_CLIENT_ID_KEY}")
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET_KEY}")
         
-        ACCESS_TOKEN = sh (script: "curl -s 'https://eu1.anypoint.mulesoft.com/accounts/api/v2/oauth2/token' \
+        ACCESS_TOKEN = sh (script: "curl -s 'https://{{ANYPOINT_HOST}}/accounts/api/v2/oauth2/token' \
           -X POST -H 'Content-Type: application/json' \
           -d '{\"grant_type\": \"client_credentials\", \"client_id\": \"${ANYPOINT_APP_CLIENT_ID}\", \"client_secret\": \"${ANYPOINT_APP_CLIENT_SECRET}\"}' \
           | sed -n 's|.*\"access_token\":\"\\([^\"]*\\)\".*|\\1|p'", returnStdout: true).trim()

@@ -1,15 +1,42 @@
 # template-api
 
-## Release
+## TEMPLATE
 
-Make sure that `pom.xml` file contains the url to your repo (either ssh or http). Make sure to replace it at the following:
+### Description
 
-```xml
-<scm>
-  <developerConnection>scm:git:[REPLACE_WITH_REPO_URL]</developerConnection>
-  <tag>HEAD</tag>
-</scm>
+This project is a simple template that integrates some of MuleSoft best practices. It provides a set of standard minimalistic tools that should help you start your project quickly/efficiently.
+
+  - **Plugins**
+      - mule-maven-plugin: enriched with a configuration that goes along with the Jenkinsfile (pipeline).
+      - maven-release-plugin: maven release management tool see the **Realse** section for more information on how to use it
+  - **Structure**
+      - Separation between interface and implementation
+      - Global configuration file
+      - Resources
+          - property files: 
+            - common property file containing environment variable common to all environments (sandbox to production) like http port, basePath etc ...
+            - jsonlogger property files, used to configure the JSON Logger plugin
+            - a property file for each environment DEV/QA/UAT. You can add as many as you want (just don't forget to update the jenkinsfile)
+  - **Dependencies** Your organisation should add the following dependencies to exchange.
+      - json-logger
+      - common-error-handler
+  - **CI/CD**
+      - Jenkinsfile: a generic premade pipeline. Instructions to building the jenkins server are located in `ci-cd_setup.md` file.
+
+### INSTANTIATE
+
+Make sure the `instantiate.sh` file is executable
+```bash
+$ chmod +x instantiate.sh
 ```
+
+Here's how to use the script 
+
+```
+$ ./instantiate.sh [api-name] [api-repo-url] []
+```
+
+## RELEASE
 
 In order to prepare a release, execute the following : 
 

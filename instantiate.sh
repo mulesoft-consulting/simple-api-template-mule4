@@ -1,7 +1,14 @@
 #!/bin/bash
 
 # Execute : 
-#      $ ./instantiate.sh  my-api-name  git@github:user/repository.git  07ac71-97cb-46c0-ad91-105eb78e8
+#      $ ./instantiate.sh  \
+#           my-api-name \
+#           07ac71-97cb-46c0-ad91-105eb78e8 \
+#           myBusinessGroupName \
+#           git@github:user/repository.git \  
+#           maven-settings-id \
+#           eu1.anypoint.mulesoft.com \
+#           eu-central-1 \
 
 # This script executes the following steps:
 # 1. Creates a new project in the parent folder where this template is located
@@ -29,11 +36,16 @@ set -u
 
 print_help () {
     echo
-    echo "Usage: ./instantiate.sh [api-name] [api-repo-url]"
+    echo "Usage: ./instantiate.sh [api-name] [group-id] [group-name] [api-repo-url] [maven-settings-id] [anypoint-host] [region]"
     echo
     echo "Options:"
     echo "api-name (required): the name of the project"
-    echo "api-repo-url: the url to the repo"
+    echo "group-id: the business group id. default -> FAKE_BGID"
+    echo "group-name: the business group name. default ->  FAKE_BGN"
+    echo "api-repo-url: the url to the repo. default empty"
+    echo "maven-settings-id: the id of the maven global settings that will be used in the jenkins pipeline. default -> maven-global-settings"
+    echo "anypoint-host: the anypoint host. default -> anypoint.mulesoft.com"
+    echo "region: the cloudhub region. default -> us-east-1"
     echo
 }
 
@@ -56,6 +68,15 @@ print_group_id_missing () {
     echo
 }
 
+print_group_name_missing () {
+    echo
+    echo " ______________________________________________________________________________________________________"
+    echo "| !! Group Name manual configuration !!"
+    echo "| * Don't forget to update the ANYPOINT_BUSINESS_GROUP variable in your Jenkinsfile file"
+    echo "|______________________________________________________________________________________________________"
+    echo
+}
+
 # We need the script's name in order to exclude it from searches.
 SCRIPT_NAME=$(basename "$0")
 
@@ -64,35 +85,67 @@ SCRIPT_NAME=$(basename "$0")
 OLD_ROOT=$(basename "$PWD")
 TEMPLATE_FLAG="template-api" 
 
+#---------- PARAMETERS ---------------------------------------------------
 
 if [ "$#" -lt 1 ]; then
     print_help
-    echo "[Error] You must specify at least one argument: your API's name."
+    echo "[Error] You must specify at least the API Name."
     exit 1
 fi
 
 # API name.
 NEW_ROOT="$1"
 
-#API Repository
+#BUSINESS_GROUP_ID 
 if [ "$#" -gt 1 ]; then
-    REPO_URL="$2"
+    GROUP_ID="$2"
+else
+    GROUP_ID=""
+fi
+
+#BUSINESS GROUP NAME
+if [ "$#" -gt 2 ]; then
+    GROUP_NAME="$3"
+else
+    GROUP_NAME=""
+fi
+
+#API Repository
+if [ "$#" -gt 3 ]; then
+    REPO_URL="$4"
 else
     REPO_URL=""
 fi
 
-#GROUP_ID 
-if [ "$#" -gt 2 ]; then
-    GROUP_ID="$3"
+#MAVEN GLOBAL SETTINGS ID
+if [ "$#" -gt 4 ]; then
+    MVN_GLBL_SETT_ID="$5"
 else
-    GROUP_ID=""
+    MVN_GLBL_SETT_ID="maven-global-settings"
 fi
+
+#ANYPOINT HOST
+if [ "$#" -gt 5 ]; then
+    ANYPOINT_HOST="$6"
+else
+    ANYPOINT_HOST="anypoint.mulesoft.com"
+fi
+
+#REGION
+if [ "$#" -gt 6 ]; then
+    REGION="$7"
+else
+    REGION="us-east-1"
+fi
+
 
 if [ -d "../$NEW_ROOT" ]; then
     print_help
     echo "[Error] \"$NEW_ROOT\" Directory exists. Please provide another name or remove the existing."
     exit 1
 fi
+
+#-------------------------------------------------------------------------------
 
 echo;echo "Clone begin."
 
@@ -105,6 +158,8 @@ cd "../$NEW_ROOT"
 echo "done."
 
 echo;echo "#### STEP2: CUSTOMIZING PROJECT"
+
+echo;echo "############### PROJECT NAME UPDATE"
 # Rename files by replacing the project name.
 while IFS= read -r -d '' old_name; do
     new_name="${old_name//$TEMPLATE_FLAG/$NEW_ROOT}"
@@ -113,19 +168,55 @@ while IFS= read -r -d '' old_name; do
     echo "done"
 done < <(find ./src -not -path "*/.git*" -type f -name "*${TEMPLATE_FLAG}*" -print0)
 
-# Replace project name in src files
-echo -n "* Replacing project name src files... "
+# Replace project name in src/, pom and README files
+echo -n "* Replacing project name everywhere... "
 find ./src -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
 find ./src -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
-echo "done."
-
-# Replace project name in POM
-echo -n "* Replacing project name in POM... "
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
+find README.md -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
+find README.md -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
 echo "done."
 
-echo;echo "#### STEP3: GIT CONF"
+echo;echo "############### ANYPOINT HOST UPDATE"
+echo "* Using host: $ANYPOINT_HOST"
+echo -n "* Updating host in pom and jenkinsfile files... "
+sed -i '' "s/{{ANYPOINT_HOST}}/$ANYPOINT_HOST/g" pom.xml
+sed -i '' "s/{{ANYPOINT_HOST}}/$ANYPOINT_HOST/g" Jenkinsfile
+echo "done"
+
+echo;echo "############### ANYPOINT REGION UPDATE"
+echo "* Using region: $REGION"
+echo -n "* Updating region in jenkinsfile file... "
+sed -i '' "s/{{REGION}}/$REGION/g" Jenkinsfile
+echo "done"
+
+echo;echo "############### GROUP ID UPDATE"
+if [ -z "$GROUP_ID" ]; then
+    print_group_id_missing
+else
+    echo -n "* Updating Group Id... "
+    sed -i '' "s/{{GROUP_ID}}/$GROUP_ID/g" pom.xml
+    echo "done"
+fi
+
+echo;echo "############### GROUP NAME UPDATE"
+if [ -z "$GROUP_NAME" ]; then
+    print_group_name_missing
+else
+    echo -n "* Updating Group Name... "
+    sed -i '' "s/{{GROUP_NAME}}/$GROUP_NAME/g" Jenkinsfile
+    echo "done"
+fi
+
+echo;echo "############### MAVEN GLOBAL SETTINGS ID"
+echo "* Using maven global settings id: $MVN_GLBL_SETT_ID"
+echo -n "* Updating id in jenkinsfile file... "
+sed -i '' "s/{{MVN_GLBL_SETT_ID}}/$MVN_GLBL_SETT_ID/g" Jenkinsfile
+echo "done"
+
+
+echo;echo "############### GIT CONFIGURATION"
 echo "* Initializing git..."
 git init
 
@@ -142,32 +233,23 @@ else
         fi
     done
     echo -n "** Updating pom.xml... "
-    sed -i '' "s/\[REPLACE_WITH_REPO_URL\]/$REPO_ESC_URL/g" pom.xml
+    sed -i '' "s/{{REPO_URL}}/$REPO_ESC_URL/g" pom.xml
     echo "done."
     echo -n "** Updating git remote url... "
     git remote set-url origin "$REPO_URL"
     echo "done."
 fi
 
-echo;echo "#### STEP4: GROUP ID UPDATE"
-
-if [ -z "$GROUP_ID" ]; then
-    print_group_id_missing
-else
-    echo -n "* Updating Group Id... "
-    sed -i '' "s/\[REPLACE_WITH_GROUP_ID\]/$GROUP_ID/g" pom.xml
-    echo "done"
-fi
-
-echo;echo "#### STEP5: CLEANING PROJECT"
+echo;echo "#### STEP3: CLEANING PROJECT"
 echo -n "* removing files..."
 rm -f "$SCRIPT_NAME"
+rm -f "ci-cd_setup.md"
 echo "done."
 
-echo
-read -p "Do you want to commit the changes on your brand new project ? (y/N) " decision
+
+echo;read -p "Do you want to commit the changes on your brand new project ? (y/N) " decision
 if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
-    echo "* Commit skipped."
+    echo;echo "* git commit skipped."
 else
     echo -n "* Committing initial changes... "
     git commit -am "Project init from template"

@@ -30,11 +30,41 @@ Make sure the `instantiate.sh` file is executable
 $ chmod +x instantiate.sh
 ```
 
-Here's how to use the script 
+Below is how to use the instantiation script:
 
+```bash
+$ ./instantiate.sh [api-name] [group-id] [group-name] [api-repo-url] [maven-settings-id] [anypoint-host] [region]
 ```
-$ ./instantiate.sh [api-name] [api-repo-url] []
+
+Where the options are: 
+
+| parameters    | description    | example       | default    |
+|---------------|----------------|---------------|------------|
+|`api-name`     |**required** the name of the new project| my-project-name | |
+|`group-id`     |The business group id (cloudhub). | 0aefazeg0aazera2 |  |
+|`group-name`   |The business group name (cloudhub)| MyBusinessGroup  | |
+|`api-repo-url` |The repository url (ssh or http) of the api| git@github:user/repository.git | |
+|`maven-settings-id` | The Id of Maven global settings in jenkins. Refer to the `ci-cd_setup.md` file for more information on how to setup this id along with the pipeline.| `my-maven-global-settings` | maven-global-settings|
+|`anypoint-host`  | The anypoint host | anypoint.mulesoft.com | anypoint.mulesoft.com |
+|`region`         | The anypoint region | eu-central-1 | us-east-1 |
+
+
+> **Note:** that parameters should be given in the **right order**. Only the `api-name` is required. 
+
+Example: 
+
+```bash
+$ ./instantiate.sh  \
+      my-api-name \
+      07ac71-97cb-46c0-ad91-105eb78e8 \
+      myBusinessGroupName \
+      git@github:user/repository.git \  
+      maven-settings-id \
+      eu1.anypoint.mulesoft.com \
+      eu-central-1
 ```
+
+The new project will be created in the same folder as the template folder. 
 
 ## RELEASE
 

@@ -43,7 +43,7 @@ Go to **Manage Jenkins > Managed files** and click on the **Add a new Config** t
 
 > ![alt text](./assets/img/jenkins_managed-config.png)
 
-Select **Global Maven settings.xml** and dont forget to change the **ID** to `qa-cargo-mvn-settings` which corresponds to the name used in the Jenkins pipeline script. Give it a name then fill the content with the following configuration file and don't forget to replace your **nexus** credentials, we will set the **exchange** credentials using a different method : 
+Select **Global Maven settings.xml** and dont forget to change the **ID** to the same id used in `Jenkinsfile` pipeline script (MVN_SETTING_FILE_ID variable). Give it a name then fill the content with the following configuration file and don't forget to replace your **nexus** credentials, we will set the **exchange** credentials using a different method : 
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

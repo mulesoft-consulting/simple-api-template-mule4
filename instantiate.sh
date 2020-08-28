@@ -8,7 +8,7 @@
 #           git@github:user/repository.git \  
 #           maven-settings-id \
 #           eu1.anypoint.mulesoft.com \
-#           eu-central-1 \
+#           eu-central-1 
 
 # This script executes the following steps:
 # 1. Creates a new project in the parent folder where this template is located
@@ -40,8 +40,8 @@ print_help () {
     echo
     echo "Options:"
     echo "api-name (required): the name of the project"
-    echo "group-id: the business group id. default -> FAKE_BGID"
-    echo "group-name: the business group name. default ->  FAKE_BGN"
+    echo "group-id: the business group id."
+    echo "group-name: the business group name."
     echo "api-repo-url: the url to the repo. default empty"
     echo "maven-settings-id: the id of the maven global settings that will be used in the jenkins pipeline. default -> maven-global-settings"
     echo "anypoint-host: the anypoint host. default -> anypoint.mulesoft.com"

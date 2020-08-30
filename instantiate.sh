@@ -77,6 +77,10 @@ print_group_name_missing () {
     echo
 }
 
+COLOR_GREEN="$(tput setaf 2)"
+COLOR_REST="$(tput sgr0)"
+
+
 # We need the script's name in order to exclude it from searches.
 SCRIPT_NAME=$(basename "$0")
 
@@ -155,7 +159,7 @@ echo;echo "#### STEP1: COPY PROJECT"
 echo -n "* Create new folder ../$OLD_ROOT -> ../$NEW_ROOT ... "
 cp -r "../$OLD_ROOT" "../$NEW_ROOT"
 cd "../$NEW_ROOT"
-echo "done."
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 echo;echo "#### STEP2: CUSTOMIZING PROJECT"
 
@@ -165,7 +169,7 @@ while IFS= read -r -d '' old_name; do
     new_name="${old_name//$TEMPLATE_FLAG/$NEW_ROOT}"
     echo -n "* Renaming $old_name -> $new_name... "
     mv "$old_name" "$new_name"
-    echo "done"
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 done < <(find ./src -not -path "*/.git*" -type f -name "*${TEMPLATE_FLAG}*" -print0)
 
 # Replace project name in src/, pom and README files
@@ -176,20 +180,20 @@ find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW
 find pom.xml -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
 find README.md -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$OLD_ROOT"/"$NEW_ROOT"/g
 find README.md -type f -print0 | LC_CTYPE=C xargs -0 sed -i '' s/"$TEMPLATE_FLAG"/"$NEW_ROOT"/g
-echo "done."
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 echo;echo "############### ANYPOINT HOST UPDATE"
 echo "* Using host: $ANYPOINT_HOST"
 echo -n "* Updating host in pom and jenkinsfile files... "
 sed -i '' "s/{{ANYPOINT_HOST}}/$ANYPOINT_HOST/g" pom.xml
 sed -i '' "s/{{ANYPOINT_HOST}}/$ANYPOINT_HOST/g" Jenkinsfile
-echo "done"
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 echo;echo "############### ANYPOINT REGION UPDATE"
 echo "* Using region: $REGION"
 echo -n "* Updating region in jenkinsfile file... "
 sed -i '' "s/{{REGION}}/$REGION/g" Jenkinsfile
-echo "done"
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 echo;echo "############### GROUP ID UPDATE"
 if [ -z "$GROUP_ID" ]; then
@@ -197,7 +201,7 @@ if [ -z "$GROUP_ID" ]; then
 else
     echo -n "* Updating Group Id... "
     sed -i '' "s/{{GROUP_ID}}/$GROUP_ID/g" pom.xml
-    echo "done"
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 fi
 
 echo;echo "############### GROUP NAME UPDATE"
@@ -206,14 +210,14 @@ if [ -z "$GROUP_NAME" ]; then
 else
     echo -n "* Updating Group Name... "
     sed -i '' "s/{{GROUP_NAME}}/$GROUP_NAME/g" Jenkinsfile
-    echo "done"
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 fi
 
 echo;echo "############### MAVEN GLOBAL SETTINGS ID"
 echo "* Using maven global settings id: $MVN_GLBL_SETT_ID"
 echo -n "* Updating id in jenkinsfile file... "
 sed -i '' "s/{{MVN_GLBL_SETT_ID}}/$MVN_GLBL_SETT_ID/g" Jenkinsfile
-echo "done"
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 
 echo;echo "############### GIT CONFIGURATION"
@@ -234,10 +238,10 @@ else
     done
     echo -n "** Updating pom.xml... "
     sed -i '' "s/{{REPO_URL}}/$REPO_ESC_URL/g" pom.xml
-    echo "done."
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
     echo -n "** Updating git remote url... "
     git remote set-url origin "$REPO_URL"
-    echo "done."
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 fi
 
 echo;echo "#### STEP3: CLEANING PROJECT"
@@ -245,7 +249,7 @@ echo -n "* removing files..."
 rm -f "$SCRIPT_NAME"
 rm -f "ci-cd_setup.md"
 rm -r "assets"
-echo "done."
+printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 
 
 echo;read -p "Do you want to commit the changes on your brand new project ? (y/N) " decision
@@ -254,7 +258,7 @@ if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
 else
     echo -n "* Committing initial changes... "
     git commit -am "Project init from template"
-    echo "done."
+    printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 fi
 
 cd "../$OLD_ROOT"

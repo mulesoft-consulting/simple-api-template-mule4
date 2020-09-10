@@ -55,7 +55,7 @@ def parseRepoName (git_url) {
   if(!git_url){
     throw new Error("git url ${git_url} is not valid.")
   }
-  def (_,head,name) = (git_url =~ /^(git@|https:\/\/).*\/(.*)\.git$/)[0]
+  def (_,head,name) = (git_url =~ /^(git@|https:\/\/).*\/(.*)(\.git)?$/)[0]
   return name
 }
 

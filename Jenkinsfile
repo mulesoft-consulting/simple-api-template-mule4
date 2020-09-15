@@ -59,6 +59,16 @@ def parseRepoName (git_url) {
   return name
 }
 
+//returns the appropriate number of workers depending on the environment
+def getNbWorkers (env_name) {
+	def workers;
+	if(env_name == "PROD"){ 
+    workers = "2" 
+  } else	{
+ 		workers = "1"
+ 	}
+ return workers
+}
 
 /* 
   PIPELINE 
@@ -95,7 +105,7 @@ pipeline {
     ANYPOINT_REGION = "{{REGION}}"
     ANYPOINT_BUSINESS_GROUP = "{{GROUP_NAME}}"
     ANYPOINT_WORKER_TYPE = "MICRO"
-    ANYPOINT_WORKERS = "1"
+    ANYPOINT_WORKERS = getNbWorkers("$ANYPOINT_ENV")
     ANYPOINT_HOST = "https://{{ANYPOINT_HOST}}"
     ANYPOINT_ANALYTICS_HOST = "https://analytics-ingest.{{ANYPOINT_HOST}}"
 

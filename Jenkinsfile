@@ -142,6 +142,7 @@ pipeline {
           sh '''
             mvn -s $MAVEN_SETTINGS_XML clean test \
               -Denv=${ENV} \
+              -Dmule.env=${ENV} \
               -Danypoint.base_uri=${ANYPOINT_HOST} \
               -DauthToken=${ACCESS_TOKEN} \
               -Dmule.vault.key=${ANYPOINT_VAULT_KEY} \
@@ -171,6 +172,7 @@ pipeline {
           sh '''
             mvn -s $MAVEN_SETTINGS_XML deploy -DmuleDeploy \
               -Denv=${ENV} \
+              -Dmule.env=${ENV} \
               -Dmule.vault.key=${ANYPOINT_VAULT_KEY} \
               -Danypoint.base_uri=${ANYPOINT_HOST} \
               -Danypoint.analytics_base_uri=${ANYPOINT_ANALYTICS_HOST} \

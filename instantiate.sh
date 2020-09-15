@@ -52,28 +52,28 @@ print_help () {
 print_git_repo_missing () {
     echo
     echo " ______________________________________________________________________________________________________"
-    echo "| !! Git Repository manual configuration !!"
-    echo "| * Please reconfigure your git remote address using: git remote set-url origin <repo-url>"
-    echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection>"
-    echo "|______________________________________________________________________________________________________"
+    echo "| !! Git Repository manual configuration !!                                                            |"
+    echo "| * Please reconfigure your git remote address using: git remote set-url origin <repo-url>             |"
+    echo "| * Make sure to update the repo url in the pom.xml inside <developerConnection></developerConnection> |"
+    echo "|______________________________________________________________________________________________________|"
     echo
 }
 
 print_group_id_missing () {
     echo
     echo " ______________________________________________________________________________________________________"
-    echo "| !! Group ID manual configuration !!"
-    echo "| * Don't forget to update the groupId in your pom.xml file"
-    echo "|______________________________________________________________________________________________________"
+    echo "| !! Group ID manual configuration !!                                                                  |"
+    echo "| * Don't forget to update the groupId in your pom.xml file                                            |"
+    echo "|______________________________________________________________________________________________________|"
     echo
 }
 
 print_group_name_missing () {
     echo
     echo " ______________________________________________________________________________________________________"
-    echo "| !! Group Name manual configuration !!"
-    echo "| * Don't forget to update the ANYPOINT_BUSINESS_GROUP variable in your Jenkinsfile file"
-    echo "|______________________________________________________________________________________________________"
+    echo "| !! Group Name manual configuration !!                                                                |"
+    echo "| * Don't forget to update the ANYPOINT_BUSINESS_GROUP variable in your Jenkinsfile file               |"
+    echo "|______________________________________________________________________________________________________|"
     echo
 }
 
@@ -228,6 +228,7 @@ printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 echo;echo "############### GIT CONFIGURATION"
 echo "* Initializing git..."
 git init
+git remote rm origin
 
 if [ -z "$REPO_URL" ]; then
     print_git_repo_missing

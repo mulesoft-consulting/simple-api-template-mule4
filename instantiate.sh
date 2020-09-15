@@ -168,7 +168,7 @@ echo;echo "############### PROJECT NAME UPDATE"
 while IFS= read -r -d '' old_name; do
     new_name="${old_name//$TEMPLATE_FLAG/$NEW_ROOT}"
     echo -n "* Renaming $old_name -> $new_name... "
-    mv "$old_name" "$new_name"
+    git mv "$old_name" "$new_name"
     printf '%s%s%s\n' $COLOR_GREEN 'done' $COLOR_REST
 done < <(find ./src -not -path "*/.git*" -type f -name "*${TEMPLATE_FLAG}*" -print0)
 

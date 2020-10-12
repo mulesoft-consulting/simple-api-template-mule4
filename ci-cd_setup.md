@@ -60,7 +60,7 @@ Select **Global Maven settings.xml** and dont forget to change the **ID** to the
   <servers>
     <server>
       <id>Exchange2</id>
-      <username>~~Token~~</username>
+      <username>~~~Token~~~</username>
       <password>${env.ACCESS_TOKEN}</password>
     </server>
     <server>

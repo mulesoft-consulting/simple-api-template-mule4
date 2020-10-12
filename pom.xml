@@ -56,7 +56,7 @@
 						<environment>${anypoint.environment}</environment>
 						<deploymentTimeout>2000000</deploymentTimeout>
 						<properties>
-							<mule.env>${env}</mule.env>
+							<mule.env>${mule.env}</mule.env>
 							<anypoint.platform.client_id>${platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${platform.client_secret}</anypoint.platform.client_secret>
 							<mule.vault.key>${mule.vault.key}</mule.vault.key>

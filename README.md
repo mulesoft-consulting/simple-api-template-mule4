@@ -8,7 +8,7 @@ This project is a simple template that integrates some of MuleSoft best practice
 
   - **Plugins**
       - mule-maven-plugin: enriched with a configuration that goes along with the Jenkinsfile (pipeline).
-      - maven-release-plugin: maven release management tool see the **Realse** section for more information on how to use it
+      - maven-release-plugin: maven release management tool see the **Release** section for more information on how to use it
   - **Structure**
       - Separation between interface and implementation
       - Global configuration file
